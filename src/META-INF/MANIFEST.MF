@@ -1,0 +1,3 @@
+Manifest-Version: 1.0 
+Agent-Class: net.rebeyond.memshell.Agent
+Can-Retransform-Classes: true

