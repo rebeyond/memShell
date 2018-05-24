@@ -12,7 +12,7 @@ a webshell resides in the memory of java web server
 * anyurl?pwd=pass&model=proxy  //start a socks proxy server on the victim.  
 * anyurl?pwd=pass&model=chopper  //start a chopper server agent on the victim.  
 
-**It is recommended to use the POST method to submit data** 
+**!!!It is recommended to use the POST method to submit data.** 
 
 # note
 For learning exchanges only, do not use for illegal purposes.by rebeyond.
