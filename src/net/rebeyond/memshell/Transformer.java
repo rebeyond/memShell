@@ -8,6 +8,7 @@ import java.lang.instrument.ClassFileTransformer;
 import java.lang.instrument.IllegalClassFormatException;
 import java.security.ProtectionDomain;
 
+import javassist.ClassClassPath;
 import javassist.ClassPool;
 import javassist.CtClass;
 import javassist.CtMethod;
@@ -19,8 +20,9 @@ public class Transformer implements ClassFileTransformer{
 
         if ("org/apache/catalina/core/ApplicationFilterChain".equals(s)) {
             try {
-            	Class a=Class.forName("javassist.CtClass");
                 ClassPool cp = ClassPool.getDefault();
+                ClassClassPath classPath = new ClassClassPath(aClass);  
+                cp.insertClassPath(classPath);  
                 CtClass cc = cp.get("org.apache.catalina.core.ApplicationFilterChain");
                 CtMethod m = cc.getDeclaredMethod("internalDoFilter");
                 m.addLocalVariable("elapsedTime", CtClass.longType);
@@ -29,6 +31,7 @@ public class Transformer implements ClassFileTransformer{
                 cc.detach();
                 return byteCode;
             } catch (Exception ex) {
+            	ex.printStackTrace();
                 System.out.println("error:::::"+ex.getMessage());
             }
         }
@@ -38,6 +41,8 @@ public class Transformer implements ClassFileTransformer{
     public String readSource() {
     	StringBuilder source=new StringBuilder();
         InputStream is = Transformer.class.getClassLoader().getResourceAsStream("source.txt");
+        System.out.println(Transformer.class.getClassLoader());
+        System.out.println(Transformer.class.getClassLoader().getResource("source.txt").getPath());
         InputStreamReader isr = new InputStreamReader(is); 
         String line=null;
         try {
