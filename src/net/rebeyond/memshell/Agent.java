@@ -228,7 +228,7 @@ public class Agent {
 		}
 		catch(Exception e)
 		{
-			e.printStackTrace();
+			//pass
 		}
 	}
 
