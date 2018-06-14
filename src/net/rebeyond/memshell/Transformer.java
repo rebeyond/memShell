@@ -21,8 +21,8 @@ public class Transformer implements ClassFileTransformer{
         if ("org/apache/catalina/core/ApplicationFilterChain".equals(s)) {
             try {
                 ClassPool cp = ClassPool.getDefault();
-                ClassClassPath classPath = new ClassClassPath(aClass);  
-                cp.insertClassPath(classPath);  
+                ClassClassPath classPath = new ClassClassPath(aClass);  //get current class's classpath
+                cp.insertClassPath(classPath);  //add the classpath to classpool
                 CtClass cc = cp.get("org.apache.catalina.core.ApplicationFilterChain");
                 CtMethod m = cc.getDeclaredMethod("internalDoFilter");
                 m.addLocalVariable("elapsedTime", CtClass.longType);
@@ -41,8 +41,6 @@ public class Transformer implements ClassFileTransformer{
     public String readSource() {
     	StringBuilder source=new StringBuilder();
         InputStream is = Transformer.class.getClassLoader().getResourceAsStream("source.txt");
-        System.out.println(Transformer.class.getClassLoader());
-        System.out.println(Transformer.class.getClassLoader().getResource("source.txt").getPath());
         InputStreamReader isr = new InputStreamReader(is); 
         String line=null;
         try {
