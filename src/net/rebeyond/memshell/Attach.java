@@ -35,8 +35,13 @@ public class Attach {
 				if (vmList.size() <= 0)
 					continue;
 				for (VirtualMachineDescriptor vmd : vmList) {
-					if (vmd.displayName().indexOf("catalina") >= 0) {
+					if (vmd.displayName().indexOf("catalina") >= 0||vmd.displayName().equals("")) {
 						vm = VirtualMachine.attach(vmd);
+						
+						//ADD for tomcat windows service,dispayname is blank string and has key "catalina.home".
+						if (vmd.displayName().equals("")&&vm.getSystemProperties().containsKey("catalina.home")==false)
+							continue;
+						
 						System.out.println("[+]OK.i find a jvm.");
 						Thread.sleep(1000);
 						if (null != vm) {
@@ -46,7 +51,6 @@ public class Attach {
 							return;
 						}
 					}
-
 				}
 				Thread.sleep(3000);
 			} catch (Exception e) {
